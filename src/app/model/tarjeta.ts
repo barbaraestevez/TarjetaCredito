@@ -1,17 +1,17 @@
 export class Tarjeta {
-    id?:string;
+    // id?:string;
     titular:string;
     numeroTarjeta:string;
     cvv:number;
-    fechaCreacion?:string;
-    fechaCaducidad:Date;
+    fechaCaducidad:string;
+    fechaCreacion?:Date;
 
-    constructor(id:string,titular:string,numeroTarjeta:string,cvv:number,fechaCreacion:string){
-        this.id = id;
+    constructor(titular:string,numeroTarjeta:string,cvv:number,fechaCreacion:string, fechaCaducidad:string){ //id:string
+        // this.id = id;
         this.titular = titular;
         this.numeroTarjeta = numeroTarjeta;
         this.cvv = cvv;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaCaducidad = new Date();
+        this.fechaCreacion = new Date();
+        this.fechaCaducidad = fechaCaducidad;
     }
 }

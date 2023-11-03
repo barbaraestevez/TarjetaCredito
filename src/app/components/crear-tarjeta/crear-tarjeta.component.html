@@ -1,1 +1,39 @@
-<p>crear-tarjeta works!</p>
+<div class="card">
+    <div class="card-body">
+        <h5 class="titulo">CREAR TARJETA</h5>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="crearTarjeta()" >
+        <!--  -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+                <i class="fa-regular fa-user" [class.green-icon]="this.form.get('titular')?.valid"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Titular" formControlName="titular">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+                <i class="fa-regular fa-credit-card" [class.green-icon]="this.form.get('numeroTarjeta')?.valid"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Nº de Tarjeta" formArrayName="numeroTarjeta" maxlength="16">
+        </div>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="fa-regular fa-calendar-days" [class.green-icon]="this.form.get('fechaCaducidad')?.valid"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="MM/YY" formControlName="fechaCaducidad">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="fa-solid fa-lock" [class.green-icon]="this.form.get('cvv')?.valid" [class.red-icon]="this.form.get('CVV')?.invalid && this.form.get('CVV')?.dirty"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="cvv" formControlName="cvv">
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-2"><button class="btn btn-dark btn-lg" type="submit">Enviar&nbsp;<i class="fa-solid fa-paper-plane"></i></button></div>
+    </form>
+</div>
