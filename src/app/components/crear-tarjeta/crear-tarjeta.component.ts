@@ -35,7 +35,32 @@ export class CrearTarjetaComponent {
       this.form.value.cvv,
       this.form.value.fechaCreacion,
       this.form.value.fechaCaducidad,
-    )
+      )
+      console.log(this.form.value.numeroTarjeta);
     console.log(this.form);
   }
 }
+
+/*
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCyEm_hxYNZ9l5Ovvvp4K1O9gx8s-BKKBc",
+  authDomain: "tarjetacredito-84dd8.firebaseapp.com",
+  projectId: "tarjetacredito-84dd8",
+  storageBucket: "tarjetacredito-84dd8.appspot.com",
+  messagingSenderId: "112486162447",
+  appId: "1:112486162447:web:6a0c21505219d982c8037a",
+  measurementId: "G-SB4277JKXR"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+*/
