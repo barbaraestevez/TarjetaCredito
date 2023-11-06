@@ -1,5 +1,5 @@
 export class Tarjeta {
-    // id?:string;
+    id?:string;
     titular:string;
     numeroTarjeta:string;
     cvv:number;
