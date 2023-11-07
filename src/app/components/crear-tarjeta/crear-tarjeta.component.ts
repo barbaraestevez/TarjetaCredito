@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Tarjeta } from 'src/app/model/tarjeta';
 import { TarjetaService } from 'src/app/services/tarjeta.service';
 
@@ -11,31 +12,20 @@ import { TarjetaService } from 'src/app/services/tarjeta.service';
 export class CrearTarjetaComponent {
   form: FormGroup;
 
-  constructor(private _fb: FormBuilder, private _ts:TarjetaService) {
+  constructor(private _fb: FormBuilder, private _ts: TarjetaService, private _toastr:ToastrService) {
     this.form = this._fb.group(
       //los formularios reactivos permiten, a través de Validators,
       {
         titular: ['', [Validators.required, Validators.maxLength(40)]],
         numeroTarjeta: [
           '',
-          [
-            Validators.required,
-            Validators.minLength(16),
-            Validators.maxLength(16),
-          ],
-        ], // Validators.pattern(/^[0-9]{16}$/)
+          [Validators.required, Validators.pattern(/^[0-9]{16}$/)],
+        ], // Validators.minLength(16), Validators.maxLength(16),
         fechaCaducidad: [
           '',
           [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)],
         ], //Validators.minLength(5), Validators.maxLength(5)
-        cvv: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(3),
-          ],
-        ], //Validators.pattern(/^\d{3}$/)
+        cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]], //Validators.minLength(3), Validators.maxLength(3),
       }
     );
   }
@@ -57,8 +47,12 @@ export class CrearTarjetaComponent {
     );
 
     this._ts.create(TARJETA);
-    this.form.reset();
-    window.location.reload();
+    this._toastr.success("Registro añadido con éxito en la BBDD", "Operación exitosa");
+    setInterval(()=>{
+      window.location.reload()
+    }, 2000);
+    // this.form.reset();
+   // window.location.reload();
 
     // console.log(this.form.value.numeroTarjeta);
     // console.log(this.form);
