@@ -71,7 +71,7 @@ app.delete("/removecard/:id", (req, res) => {
     });
 });
 
-app.put("update-entry/:card", (req, res) => {
+app.put("/update-entry/:card", (req, res) => {
   const updateEntry = new cardEntryModel({
     _id: req.body._id,
     titular: req.body.titular,
@@ -80,16 +80,16 @@ app.put("update-entry/:card", (req, res) => {
     cvv: req.body.cvv,
     fechaCreacion: new Date(),
   });
-  cardEntryModel.updateOne({ _id: req._id }, updateEntry).then(() => {
-    res
-      .status(200)
-      .json({
+  cardEntryModel
+    .updateOne({ _id: req.body._id }, updateEntry)
+    .then(() => {
+      res.status(200).json({
         message: "Update Completed",
-      })
-      .catch((error) => {
-        res.status(403).send("Error:\n" + error);
       });
-  });
+    })
+    .catch((error) => {
+      res.send("Error:\n" + error);
+    });
 });
 
 // obtenemos la imformación

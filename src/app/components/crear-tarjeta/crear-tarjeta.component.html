@@ -1,8 +1,8 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="titulo">CREAR TARJETA</h5>
+        <h5 class="titulo">{{titulo | uppercase}}</h5>
     </div>
-    <form [formGroup]="form" (ngSubmit)="crearTarjeta()" >
+    <form [formGroup]="form" (ngSubmit)="guardarTarjeta()" >
         <!--  -->
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">

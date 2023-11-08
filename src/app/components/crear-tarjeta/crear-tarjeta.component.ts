@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Tarjeta } from 'src/app/model/tarjeta';
@@ -9,8 +9,11 @@ import { TarjetaService } from 'src/app/services/tarjeta.service';
   templateUrl: './crear-tarjeta.component.html',
   styleUrls: ['./crear-tarjeta.component.css'],
 })
-export class CrearTarjetaComponent {
+export class CrearTarjetaComponent implements OnInit {
   form: FormGroup;
+  titulo:string = "Crear Tarjeta"; //por interpolación va a aparecer en el título de la tarjeta del listado
+  id:string | undefined; //este id va a servir como medida de control
+  private mensajeToast: string[] = ["", ""]; // Podría quedar así también -> private mensajeToast: string[] = [];
 
   constructor(private _fb: FormBuilder, private _ts: TarjetaService, private _toastr:ToastrService) {
     this.form = this._fb.group(
@@ -29,16 +32,44 @@ export class CrearTarjetaComponent {
       }
     );
   }
-  crearTarjeta() {
-    // const TARJETA:Tarjeta = {
-    //   titular:this.form.value.titular,
-    //   numeroTarjeta:this.form.value.numeroTarjeta,
-    //   fechaCaducidad:this.form.value.fechaCaducidad,
-    //   cvv:this.form.value.cvv,
-    //   fechaCreacion: new Date()
-    // }
 
-    const TARJETA = new Tarjeta(
+  ngOnInit(): void {
+    this._ts.getTarjeta().subscribe((data)=>{ //data es el Subject que tenemos. se podría llamar como quisiéramos, incluso "pepino".
+      this.titulo = "Editar Tarjeta";
+      this.id = data._id;
+      this.form.patchValue({//asignamos los valores al formulario
+        titular:data.titular,
+        numeroTarjeta:data.numeroTarjeta,
+        fechaCaducidad:data.fechaCaducidad,
+        cvv:data.cvv
+      })
+    });
+  }
+
+  guardarTarjeta() {
+    if(this.id === undefined) {
+      this.crearTarjeta();
+      this.mensajeToast = ["Registro añadido con éxito", "Registro Añadido"];
+    }
+    else 
+    {
+      const TARJETA: Tarjeta = 
+      {
+        _id: this.id,
+        titular: this.form.value.titular,
+        numeroTarjeta: this.form.value.numeroTarjeta,
+        fechaCaducidad: this.form.value.fechaCaducidad,
+        cvv: this.form.value.cvv
+      }
+      this.editarTarjeta(TARJETA);
+      this.mensajeToast = ["Registro editado con éxito", "Registro Editado"];
+    }
+    this._toastr.success(this.mensajeToast[0],this.mensajeToast[1]);
+    //setTimeout(()=>{ window.location.reload()}, 2000);
+  }
+
+  crearTarjeta() {
+      const TARJETA = new Tarjeta(
       this.form.value.titular,
       this.form.value.numeroTarjeta,
       this.form.value.cvv,
@@ -48,14 +79,13 @@ export class CrearTarjetaComponent {
 
     this._ts.create(TARJETA);
     this._toastr.success("Registro añadido con éxito en la BBDD", "Operación exitosa");
-    setInterval(()=>{
-      window.location.reload()
-    }, 2000);
-    // this.form.reset();
-   // window.location.reload();
+    // setInterval(()=>{
+    //   window.location.reload()
+    // }, 2000);
+  }
 
-    // console.log(this.form.value.numeroTarjeta);
-    // console.log(this.form);
+  editarTarjeta(tarjeta:Tarjeta){
+    this._ts.update(tarjeta).subscribe();
   }
 }
 
